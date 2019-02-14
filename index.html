@@ -9,36 +9,70 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Crystal Collector</title>
+    <title>Star Wars RPG</title>
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="assets/javascript/game.js"></script>
-
-
 </head>
 
 <body>
     <h1>Star Wars RPG</h1>
-    <div>
-        <img class="characterimg" id="character1" src="#" alt="character1">
-        <p>health:<span id="character1HP">0</span></p>
-    </div>
-    <div>
-        <img class="characterimg" id="character1" src="#" alt="character1">
-        <p>health:<span id="character2HP">0</span></p>
+    <div id="characterSelect">
+        <h2 id="characterSelectText">Choose your Character</h2>
+        <div class="characters" id="yoda" data-name="yoda" data-atk="8" data-catk="10" data-hp="180">
+            <p>Yoda</p>
+            <img class="characterimg" src="assets/images/yoda.JPG" alt="character1">
+            <p>health:<span id="yodaHP">180</span></p>
+        </div>
+        <div class="characters" id="windu" data-name="windu" data-atk="15" data-catk="35" data-hp="100">
+            <p>Mace Windu</p>
+            <img class="characterimg" src="assets/images/maceWindu.jpg" alt="character2">
+            <p>health:<span id="winduHP">100</span></p>
 
-    </div>
-    <div>
-        <img class="characterimg" id="character1" src="#" alt="character1">
-        <p>health:<span id="character3HP">0</span></p>
+        </div>
+        <div class="characters" id="vader" data-name="vader" data-atk="10" data-catk="30" data-hp="150">
+            <p>Darth Vader</p>
+            <img class="characterimg" src="assets/images/darthVader.JPG" alt="character3">
+            <p>health:<span id="vaderHP">150</span></p>
 
-    </div>
-    <div>
-        <img class="characterimg" id="character1" src="#" alt="character1">
-        <p>health:<span id="character1HP">0</span></p>
+        </div>
+        <div class="characters" id="dooku" data-name="dooku" data-atk="12" data-catk="20" data-hp="120">
+            <p>Count Dooku</p>
+            <img class="characterimg" src="assets/images/countDooku.JPG" alt="character4">
+            <p>health:<span id="dookuHP">120</span></p>
 
+        </div>
+    </div>
+    <div id="afterSelected">
+        <h2>Your Character</h2>
+        <div id=userCharacter>
+        </div>
+        <h2>Enemies Available to Attack</h2>
+        <div id="enemySection">
+        <h3 class="enemytxt">Select an enemy to fight</h3>
+
+        </div>
+        <div id="fightSection">
+            <h2>Fight Section</h2>
+            <button id="atkBtn">Attack</button>
+            <div id="defender">
+                <h2>Defender</h2>
+            </div>
+            <p class="enemytxt" id="defeatedtxt">You defeated <span class=enemyNametxt>enemy</span> select another enemy to fight</p>
+            <div id="battlelog">
+                <p>You attacked <span class=enemyNametxt>enemy</span> for <span class=userDamagetxt>0</span> damage</p>
+                <p><span class=enemyNametxt>enemy</span> attacked you for <span class=enemyDamagetxt>0</span> damage</p>
+            </div>
+        </div>
+
+        <div id="restartSection">
+            <p id="restarttxt"></p>
+            <button id="restartBtn">Restart</button>
+        </div>
     </div>
 
+    <div id="defeatedEnemies">
+    </div>
 
 </body>

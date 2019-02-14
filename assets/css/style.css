@@ -4,7 +4,81 @@
     Date due: 2019/02/16
 */
 
+body{
+    background-image: url(../images/backgroundimg.JPG);
+    height:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right bottom;
+    background-attachment: fixed;
+    color: white;
+}
+
+h1{
+    font-size: 40px;
+}
+
+h2{
+    font-size: 30px;
+}
+
+h3{
+    font-size: 24px;
+}
+
+.characters{
+    width: 250px;
+    height:200px;
+    background-color:white;
+    color:black;
+    margin:5px;
+    border-style: solid;
+    border-color: green;
+    border-width: 3px;
+    display: inline-block;
+    text-align: center;
+    font-size: 24px;
+    
+}
+
 .characterimg{
-    width: 200px;
-    height : 200px;
+    width: 250px;
+    height : 150px;
+}
+
+
+#characterSelect{
+}
+
+.enemies{
+    border-color: red;
+}
+
+
+#fightSection{
+    display:none;
+    font-size: 24px;
+}
+
+#battlelog{
+    display:none;
+}
+
+#restartSection{
+    display:none;
+}
+
+#restarttxt{
+    font-size: 24px;
+}
+
+#enemytxt{
+}
+
+#afterSelected{
+    display:none;
+}
+
+#defeatedEnemies{
+    display:none;
 }

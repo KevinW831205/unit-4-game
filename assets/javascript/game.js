@@ -4,68 +4,159 @@
     Date due: 2019/02/16
 */
 
+
 var game = {
-    crystalval: [],
-    userScore: 0,
-    targetScore: 0,
+  characterSelected: false,
+  enemySelected: false,
+  userChar: "",
+  userAtk: 0,
+  userHP: 0,
+  characterAtk: 0,
+  enemy: "",
+  enemyHP: 0,
+  enemyAtk: 0,
+  enemyRemaining: 3,
 
-    crystalvalRNG: function(){
-    //Generates 4 distinct numbers between 1 and 12 inclusive
+  encounter: function () {
+    game.enemyHP = parseInt(game.enemyHP) - parseInt(game.userAtk);
+    game.userAtk = parseInt(game.userAtk) + parseInt(game.characterAtk);
+    if (game.enemyHP > 0) {
+      game.userHP -= game.enemyAtk;
+    }
+  },
 
-      val1 = 1 + Math.floor(Math.random() * 12); //generate a number between 1 and 12
-      val2 = 1 + Math.floor(Math.random() * 12); 
-      val3 = 1 + Math.floor(Math.random() * 12); 
-      val4 = 1 + Math.floor(Math.random() * 12); 
-      
-    //same value prevention
-      while (val1 === val2) {
-        val2 = 1 + Math.floor(Math.random() * 12); 
-      }
-      while (val3 === val2 || val3 === val1 ) {
-        val3 = 1 + Math.floor(Math.random() * 12); 
-      }
-      while (val4 === val2 || val4 === val1 || val4 === val3 ) {
-        val4 = 1 + Math.floor(Math.random() * 12); 
-      }
-      return [val1, val2, val3, val4]
-    },
+  endEncounter: function () {
+    if (game.enemyHP <= 0) {
+      game.enemyRemaining--;
+      game.enemySelected = false;
+      $(".defender").appendTo("#defeatedEnemies");
+      $(".enemytxt").show();
+      $("#battlelog").hide();
+    }
+  },
 
-    targetvalRNG: function(){
-        //generates a value between 19 and 120
-        targetval = 19 + Math.floor(Math.random() * 102); 
-        return targetval
-    },
+  endCondition: function () {
+    if (game.enemyRemaining == 0) {
+      $("#restarttxt").text("You defeated all the enemies press restart to play again")
+      $("#restartSection").show();
+      $(".enemytxt").hide();
+    }
+    else if (game.userHP <= 0) {      
+      $("#restarttxt").text("You've been defeated press restart to play again")
+      $("#restartSection").show();
+    }
+  },
 
-    winCheck: function(current,target){
-        if(current == target){
-            alert("win");
-            game.reset();
-        }else if(current >= target){
-            alert("lose");
-            game.reset();
-        }
-    },
-
-    reset: function(){
-        game.userScore = 0;
-        game.targetScore = game.targetvalRNG();
-        $("#targetScore").text(game.targetScore);
-        game.crystalval = game.crystalvalRNG();
-
-    },
+  reset: function () {
+    game.enemySelected = false;
+    game.characterSelected = false;
+    game.userAtk = 0;
+    game.userHP = 0;
+    game.enemyHP = 0;
+    game.enemyAtk = 0;
+    game.enemyRemaining = 3;
+    $(".enemytxt").show();
+    $(".characters").off();
+    $(".characters").appendTo("#characterSelect");
+    $(".characters").show();
+    $(".characters").removeClass("enemies");
+    $(".characters").removeClass("defender");
+    $("#defeatedtxt").hide();
+    $("#characterSelect").show();
+    $("#yodaHP").text($("#yoda").attr("data-hp"));
+    $("#winduHP").text($("#windu").attr("data-hp"));
+    $("#vaderHP").text($("#vader").attr("data-hp"));
+    $("#dookuHP").text($("#dooku").attr("data-hp"));
+  }
 }
 
-$(document).ready(function () {
 
-    game.reset()
-    for(var i =1; i<=4; i++){
-    $("#crystal"+i).attr("value",game.crystalval[i-1]);
+
+$(document).ready(function () {
+  // on click for the character selection, user clicked character moves to selected the rest are moved to enemy selection and given enemy class
+  $(".characters").on("click", function () {
+    if (!game.characterSelected) {
+      game.userChar = $(this).attr("data-name");
+      game.userAtk = $(this).attr("data-atk");
+      game.characterAtk = $(this).attr("data-atk")
+      game.userHP = $(this).attr("data-hp");
+      $(".characters").addClass("enemies");
+      $(".characters").appendTo("#enemySection");
+      $(this).removeClass("enemies");
+      $(this).appendTo("#userCharacter");
+      $("#characterSelect").hide();
+      $("#afterSelected").show();
+      game.characterSelected = true;
     }
-    $(".crystalimg").on("click", function () {
-        game.userScore += parseInt( $(this).attr("value"));
-        $("#userScore").text(game.userScore);
-        game.winCheck(game.userScore,game.targetScore);
+    //selecting a defender from the enemy section
+    $(".enemies").on("click", function () {
+      if (!game.enemySelected) {
+        game.enemyAtk = $(this).attr("data-catk");
+        game.enemyHP = $(this).attr("data-hp");
+        game.enemy = $(this).attr("data-name");
+        game.enemySelected = true;
+        $(".enemytxt").hide();
+        $(this).addClass("defender");
+        $(".enemyNametxt").text($(this).attr("data-name"));
+        $(this).appendTo("#defender");
+        $("#fightSection").show();
+      }
     });
-    
+  });
+
+  //attack button interaction
+  $("#atkBtn").on("click", function () {
+    if (game.enemySelected && game.userHP>0) {
+      $("#battlelog").show();
+      $(".userDamagetxt").text(game.userAtk);
+      $(".enemyDamagetxt").text(game.enemyAtk);
+      game.encounter();
+      game.endEncounter();
+      $("#" + game.enemy + "HP").text(game.enemyHP)
+      $("#" + game.userChar + "HP").text(game.userHP)
+    } else if(game.userHP<=0){
+      alert("Game Over");
+    } else{
+      alert("select an enemy");
+    }
+    //game end and restart button
+    game.endCondition();
+
+    $("#restartBtn").on("click", function () {
+      game.reset()
+      $("#restartSection").hide();
+      //reapply .on click
+      $(".characters").on("click", function () {
+        if (!game.characterSelected) {
+          game.userChar = $(this).attr("data-name");
+          game.userAtk = $(this).attr("data-atk");
+          game.characterAtk = $(this).attr("data-atk")
+          game.userHP = $(this).attr("data-hp");
+          $(".characters").addClass("enemies");
+          $(".characters").appendTo("#enemySection");
+          $(this).removeClass("enemies");
+          $(this).appendTo("#userCharacter");
+          $("#characterSelect").hide();
+          game.characterSelected = true;
+          $("#afterSelected").show();
+        }
+        $(".enemies").on("click", function () {
+          if (!game.enemySelected) {
+            game.enemyAtk = $(this).attr("data-catk");
+            game.enemyHP = $(this).attr("data-hp");
+            game.enemy = $(this).attr("data-name");
+            $(this).addClass("defender");
+            $(".enemyNametxt").text($(this).attr("data-name"));
+            $(this).prependTo("#defender");
+            game.enemySelected = true;
+            $(".enemytxt").hide();
+            $("#fightSection").show();
+          }
+        });
+      });
+    });
+  });
+
+
 
 });
