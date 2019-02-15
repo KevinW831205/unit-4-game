@@ -107,13 +107,28 @@ $(document).ready(function () {
   //attack button interaction
   $("#atkBtn").on("click", function () {
     if (game.enemySelected && game.userHP>0) {
+      $("#atkBtn").prop("disabled",true)
+      setTimeout(function(){
+        $("#atkBtn").prop("disabled",false)
+      }, 1000);
       $("#battlelog").show();
+      $("#battlelog").addClass("logAnimation")
+      setTimeout(function(){
+        $("#battlelog").removeClass("logAnimation")
+      }, 1000);
       $(".userDamagetxt").text(game.userAtk);
       $(".enemyDamagetxt").text(game.enemyAtk);
       game.encounter();
       game.endEncounter();
       $("#" + game.enemy + "HP").text(game.enemyHP)
       $("#" + game.userChar + "HP").text(game.userHP)
+      $("#" + game.enemy + "Healthtxt").addClass("healthAnimation")
+      $("#" + game.userChar + "Healthtxt").addClass("healthAnimation")
+      setTimeout(function(){
+        $("#" + game.enemy + "Healthtxt").removeClass("healthAnimation")
+        $("#" + game.userChar + "Healthtxt").removeClass("healthAnimation")
+        }, 1000);
+
     } else if(game.userHP<=0){
       alert("Game Over");
     } else{
