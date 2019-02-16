@@ -129,8 +129,8 @@ $(document).ready(function () {
         game.endEncounter();
         }, 1000);
 
-    } else if(game.userHP<=0){
-      alert("Game Over");
+    } else if(game.userHP<=0 || game.enemyRemaining ==0){
+      alert("Game Over, press restart to play again");
     } else{
       alert("select an enemy");
     }
