@@ -119,7 +119,6 @@ $(document).ready(function () {
       $(".userDamagetxt").text(game.userAtk);
       $(".enemyDamagetxt").text(game.enemyAtk);
       game.encounter();
-      game.endEncounter();
       $("#" + game.enemy + "HP").text(game.enemyHP)
       $("#" + game.userChar + "HP").text(game.userHP)
       $("#" + game.enemy + "Healthtxt").addClass("healthAnimation")
@@ -127,6 +126,7 @@ $(document).ready(function () {
       setTimeout(function(){
         $("#" + game.enemy + "Healthtxt").removeClass("healthAnimation")
         $("#" + game.userChar + "Healthtxt").removeClass("healthAnimation")
+        game.endEncounter();
         }, 1000);
 
     } else if(game.userHP<=0){
@@ -134,8 +134,9 @@ $(document).ready(function () {
     } else{
       alert("select an enemy");
     }
+    
     //game end and restart button
-    game.endCondition();
+    setTimeout(game.endCondition,1000)
 
     $("#restartBtn").on("click", function () {
       game.reset()
